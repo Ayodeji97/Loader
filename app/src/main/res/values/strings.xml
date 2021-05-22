@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoadApp</string>
+    <string name="app_name">Load Status App</string>
     <string name="app_description">Download files from Internet</string>
     <string name="action_settings">Settings</string>
 
@@ -11,4 +11,7 @@
     <string name="button_name">Click me</string>
     <string name="button_loading">We are loading </string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="retrofit_str">Retrofit - Type-safe HTTP client for android for Android and Java by Square Inc</string>
+    <string name="udacity_str">LoadApp - Current repository by Udacity</string>
+    <string name="glide_str">Glide - Image Loading Library by BumbTech</string>
 </resources>
