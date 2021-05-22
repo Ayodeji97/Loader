@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notificationManager: NotificationManager
     private lateinit var pendingIntent: PendingIntent
     private lateinit var action: NotificationCompat.Action
-    private lateinit var custom_button : LoadingButton
+    private lateinit var customButton : LoadingButton
+
 
 
     private var urlToDownload = ""
@@ -37,8 +39,9 @@ class MainActivity : AppCompatActivity() {
 
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
-        custom_button = findViewById(R.id.custom_button)
-        custom_button.setOnClickListener {
+        customButton = findViewById(R.id.custom_button)
+
+        customButton.setOnClickListener {
             download()
         }
 
@@ -52,24 +55,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun download() {
-        val request =
-            DownloadManager.Request(Uri.parse(urlToDownload))
-                .setTitle(getString(R.string.app_name))
-                .setDescription(getString(R.string.app_description))
-                .setRequiresCharging(false)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true)
 
-        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        downloadID =
-            downloadManager.enqueue(request)// enqueue puts the download request in the queue.
+        if(urlToDownload == "") {
+            Toast.makeText(this, "Please select an item", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "downloading", Toast.LENGTH_LONG).show()
+            val request =
+                DownloadManager.Request(Uri.parse(urlToDownload))
+                    .setTitle(getString(R.string.app_name))
+                    .setDescription(getString(R.string.app_description))
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true)
+
+            val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            downloadID =
+                downloadManager.enqueue(request)// enqueue puts the download request in the queue.
+        }
     }
+
 
     fun onRadioButtonClicked (view : View) {
 
         if (view is RadioButton) {
 
             val checked = view.isChecked
+
 
             // check which radio button was clicked
             when (view.id) {
