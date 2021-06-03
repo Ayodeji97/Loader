@@ -17,6 +17,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.udacity.utils.sendNotification
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pendingIntent: PendingIntent
     private lateinit var action: NotificationCompat.Action
     private lateinit var customButton : LoadingButton
+    private lateinit var fileName : String
 
 
 
@@ -40,6 +42,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+
+
+        // Initialize the notification manager
+        notificationManager = ContextCompat.getSystemService(
+                applicationContext,
+                NotificationManager::class.java
+        ) as NotificationManager
+
 
         customButton = findViewById(R.id.custom_button)
 
@@ -82,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "downloading", Toast.LENGTH_LONG).show()
             val request =
                 DownloadManager.Request(Uri.parse(urlToDownload))
-                    .setTitle(getString(R.string.app_name))
+                    .setTitle(fileName)
                     .setDescription(getString(R.string.app_description))
                     .setRequiresCharging(false)
                     .setAllowedOverMetered(true)
@@ -110,16 +120,19 @@ class MainActivity : AppCompatActivity() {
                 R.id.content_main_glide_rb ->
                     if (checked) {
                         // change the url
+                        fileName = getString(R.string.glide_str)
                         urlToDownload = GLIDE_URL
                     }
 
                 R.id.content_main_udacity_rb ->
                     if (checked) {
+                        fileName = getString(R.string.udacity_str)
                         urlToDownload = UDACITY_URL
                     }
 
                 R.id.content_main_retrofit_rb -> {
                     if (checked) {
+                        fileName = getString(R.string.retrofit_str)
                         urlToDownload = RETROFIT_URL
                     }
                 }
