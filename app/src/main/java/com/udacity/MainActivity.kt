@@ -1,22 +1,24 @@
 package com.udacity
 
 import android.app.DownloadManager
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import com.udacity.utils.sendNotification
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,12 +47,30 @@ class MainActivity : AppCompatActivity() {
             download()
         }
 
+        createChannel(
+                getString(R.string.loading_app_notification_id),
+                getString(R.string.loading_app_notification_channel_name)
+        )
 
     }
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+
+            when (intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)) {
+                downloadID -> {
+
+                    customButton.buttonState = ButtonState.Completed
+
+                    notificationManager.sendNotification(urlToDownload, applicationContext, getString(R.string.success))
+                }
+
+                else -> {
+                    customButton.buttonState = ButtonState.Completed
+
+                    notificationManager.sendNotification(urlToDownload, applicationContext, getString(R.string.failure))
+                }
+            }
         }
     }
 
@@ -112,6 +132,43 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun createChannel (channelId : String, channelName : String) {
+
+        // create a channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            val notificationChannel = NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                        setShowBadge(false)
+            }
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = "Download completed"
+
+
+            // Get an instance of notification manager
+            val notificationManager = this.getSystemService(
+                    NotificationManager::class.java
+            )
+
+            // create the notification channel
+            notificationManager.createNotificationChannel(notificationChannel)
+
+        }
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(receiver)
     }
 
     companion object {
