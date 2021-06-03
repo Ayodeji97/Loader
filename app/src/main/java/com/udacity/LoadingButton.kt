@@ -4,34 +4,42 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import kotlin.properties.Delegates
 
+
 class LoadingButton @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var widthSize = 0
     private var heightSize = 0
 
-    private val paintInitialButtonColor = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    // Paint object for coloring and styling Button
+    private var paintButton = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = context.getColor(R.color.colorPrimary)
         isAntiAlias = true
     }
 
-    private val paintLoadingButtonColor = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private var paintLoadingButton = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = context.getColor(R.color.colorPrimaryDark)
         isAntiAlias = true
     }
 
-    private val paintButtonText = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = context.getColor(R.color.white)
-        textAlign = Paint.Align.CENTER
-        textSize = 55.0f
-        isAntiAlias = true
-    }
+    private lateinit var buttonText: String
 
+    // Paint object for coloring and styling Text on the Button
+    private val paintText = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = context.getColor(R.color.white)
+        isAntiAlias = true
+        textSize = 40.0f
+        textAlign = Paint.Align.CENTER
+        typeface = Typeface.create("", Typeface.BOLD)
+        typeface = Typeface.create( "", Typeface.BOLD)
+
+    }
 
     // Paint object for coloring and styling Circle
     private var paintCircle = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -40,76 +48,50 @@ class LoadingButton @JvmOverloads constructor(
     }
 
 
+    private var valueAnimator = ValueAnimator()
 
-    private var circleAnimator = ValueAnimator()
-    private var buttonAnimator = ValueAnimator()
-    private lateinit var buttonText: String
+    var value = 0.0f
+    var width = 0.0f
+    var sweepAngle = 0.0f
 
-    private var buttonWidth = 0.0f
-    private var loadingAngle = 0.0f
-    private var animDuration = 3000L
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
 
-
-    private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
-
-        buttonText = resources.getString(R.string.button_loading)
+        // Set the button text depending on the state of the button
+        buttonText = context.getString(buttonState.buttonState)
 
         when(new) {
 
             ButtonState.Loading -> {
-                // button is loading
                 paintCircle.color = context.getColor(R.color.colorAccent)
-                loadingAngle = 0.0f
-                buttonWidth = measuredWidth.toFloat()
-
-                // circle aninmation
-                circleAnimator = ValueAnimator.ofFloat(0f, 360f).apply {
-                    duration = animDuration
-                    repeatMode = ValueAnimator.REVERSE
-                    repeatCount = ValueAnimator.INFINITE
-                    interpolator = AccelerateInterpolator(1f)
-                    addUpdateListener {
-                        loadingAngle = animatedValue as Float
-                        invalidate()
-                    }
-                }
-
-                // button animation
-                buttonAnimator = ValueAnimator.ofInt(0, widthSize).apply {
-                    duration = animDuration
-                    repeatMode = ValueAnimator.RESTART
-                    repeatCount = 1
-                    addUpdateListener {
-                        buttonWidth = animatedValue as Float
-                        invalidate()
-                    }
-                }
-                circleAnimator.start()
-                buttonAnimator.start()
-
+                valueAnimator = ValueAnimator.ofFloat(0.0f,
+                        measuredWidth.toFloat())
+                        .setDuration(2000)
+                        .apply {
+                            addUpdateListener { valueAnimator ->
+                                value = valueAnimator.animatedValue as Float
+                                sweepAngle = value / 8
+                                width = valueAnimator.animatedValue as Float
+                                repeatMode = ValueAnimator.RESTART
+                                repeatCount = ValueAnimator.INFINITE
+                                invalidate()
+                            }
+                        }
+                valueAnimator.start()
             }
 
             ButtonState.Completed -> {
-                // downloading completed : reset value
-                buttonWidth = 0f
-                loadingAngle = 0f
-                buttonAnimator.cancel()
-                circleAnimator.cancel()
-                animDuration = 0
+                // Reset to default state
+                width = 0f
+                sweepAngle = 0f
+                valueAnimator.cancel()
+                value = 0.0f
                 invalidate()
-
-
-            }
-            else -> {
-                buttonState = ButtonState.Clicked
             }
         }
-
     }
 
 
     init {
-
         buttonState = ButtonState.Clicked
     }
 
@@ -117,35 +99,32 @@ class LoadingButton @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        val textHeight: Float = paintButtonText.descent() - paintButtonText.ascent()
-        val textOffset: Float = textHeight / 2 - paintButtonText.descent()
-        canvas?.let {
-           it.apply {
-               drawRect(0.0f, 0.0f, widthSize.toFloat(), 0.0f, paintInitialButtonColor)
-               drawRect(0.0f, 0.0f, 0.0f, heightSize.toFloat(), paintLoadingButtonColor)
-               drawText(buttonText, widthSize.toFloat() / 2.0f, heightSize.toFloat() / 2.0f + textOffset, paintButtonText )
+        canvas?.drawRect(0.0f, 0.0f, widthSize.toFloat(), heightSize.toFloat(), paintButton)
+        canvas?.drawRect(0f, 0f, width, heightSize.toFloat(), paintLoadingButton)
 
-               canvas?.drawArc(0.0f- 145f,
-                   heightSize / 2 - 35f,
-                   widthSize - 75f,
-                   heightSize / 2 + 35f,
-                   0F,
-                   0.0f,
-                   true,
-                   paintCircle)
-           }
+        val textHeight: Float = paintText.descent() - paintText.ascent()
+        val textOffset: Float = textHeight / 2 - paintText.descent()
+        canvas?.drawText(buttonText, widthSize.toFloat() / 2.0f, heightSize.toFloat() / 2.0f + textOffset, paintText)
 
-        }
+        canvas?.drawArc(widthSize - 145f,
+                heightSize / 2 - 35f,
+                widthSize - 75f,
+                heightSize / 2 + 35f,
+                0F,
+                width,
+                true,
+                paintCircle)
 
     }
+
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val minw: Int = paddingLeft + paddingRight + suggestedMinimumWidth
         val w: Int = resolveSizeAndState(minw, widthMeasureSpec, 1)
         val h: Int = resolveSizeAndState(
-            MeasureSpec.getSize(w),
-            heightMeasureSpec,
-            0
+                MeasureSpec.getSize(w),
+                heightMeasureSpec,
+                0
         )
         widthSize = w
         heightSize = h

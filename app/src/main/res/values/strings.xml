@@ -10,6 +10,8 @@
 
     <string name="button_name">Click me</string>
     <string name="button_loading">We are loading </string>
+    <string name="button_clicked">DOWNLOAD</string>
+    <string name="button_completed">DOWNLOAD</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="retrofit_str">Retrofit - Type-safe HTTP client for android for Android and Java by Square Inc</string>
     <string name="udacity_str">LoadApp - Current repository by Udacity</string>
