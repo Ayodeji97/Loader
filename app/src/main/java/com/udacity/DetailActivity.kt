@@ -36,10 +36,11 @@ class DetailActivity : AppCompatActivity() {
         ) as NotificationManager
 
 
-        // intent to navigate back to [MainActivity]
-        val intent = Intent(this, MainActivity::class.java)
+        /**
+         * Finish the detail activity
+         * */
         detail_btn.setOnClickListener {
-            startActivity(intent)
+            finish()
         }
         // cancel notification
        notificationManager.cancelNotifications()
