@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         customButton = findViewById(R.id.custom_button)
 
+        // call download func on click on custom button
         customButton.setOnClickListener {
             download()
         }
@@ -64,6 +65,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     *  Broad cast receiver and send notification
+     * */
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
 
@@ -84,6 +88,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    /**
+     *   Down load function
+     * */
     private fun download() {
 
         if(urlToDownload == "") {
@@ -99,6 +107,7 @@ class MainActivity : AppCompatActivity() {
                     .setAllowedOverRoaming(true)
 
 
+            // change the state of the button while downloading
             customButton.buttonState = ButtonState.Loading
 
             val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
@@ -108,6 +117,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * On radio button clicked select the right file name and url to download
+     * */
     fun onRadioButtonClicked (view : View) {
 
         if (view is RadioButton) {
@@ -147,6 +159,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Create channel
+     * */
     private fun createChannel (channelId : String, channelName : String) {
 
         // create a channel
@@ -184,6 +199,9 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(receiver)
     }
 
+    /**
+     * Get all the url for link to download
+     * */
     companion object {
         private const val UDACITY_URL =
             "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip"

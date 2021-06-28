@@ -96,6 +96,9 @@ class LoadingButton @JvmOverloads constructor(
     }
 
 
+    /**
+     * On draw method to draw the custom view
+     * */
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 

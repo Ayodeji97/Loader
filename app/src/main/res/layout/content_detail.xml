@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--Constraint layout as the root layout -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +10,7 @@
     tools:context=".DetailActivity"
     tools:showIn="@layout/activity_detail">
 
-
+<!-- file name place holder -->
     <TextView
         android:id="@+id/content_detail_file_name_pl"
         android:layout_width="wrap_content"
@@ -19,18 +21,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    file name text view -->
     <TextView
         android:id="@+id/content_detail_file_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
-        android:layout_marginEnd="16dp"
+        android:maxLines="3"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/content_detail_file_name_pl"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/content_detail_file_name_pl"
         app:layout_constraintTop_toTopOf="@+id/content_detail_file_name_pl"
         tools:text="Glide" />
 
+<!--    Status name place holder -->
     <TextView
         android:id="@+id/content_detail_status_name_pl"
         android:layout_width="wrap_content"
@@ -41,6 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/content_detail_file_name_pl" />
 
 
+<!--    Status name text view  -->
     <TextView
         android:id="@+id/content_detail_status_name_tv"
         android:layout_width="wrap_content"
@@ -52,7 +58,9 @@
         tools:text="Success" />
 
 
+<!--    Detail button -->
     <Button
+        android:id="@+id/detail_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

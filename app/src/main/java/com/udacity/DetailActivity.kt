@@ -1,6 +1,7 @@
 package com.udacity
 
 import android.app.NotificationManager
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -21,6 +22,7 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
 
+        // fine name and download status
         fileName = intent.getStringExtra("fileName").toString()
         status = intent.getStringExtra("downloadStatus").toString()
 
@@ -34,6 +36,11 @@ class DetailActivity : AppCompatActivity() {
         ) as NotificationManager
 
 
+        // intent to navigate back to [MainActivity]
+        val intent = Intent(this, MainActivity::class.java)
+        detail_btn.setOnClickListener {
+            startActivity(intent)
+        }
         // cancel notification
        notificationManager.cancelNotifications()
 

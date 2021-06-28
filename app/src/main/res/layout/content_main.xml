@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Constraint layout as the root layout -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,6 +12,7 @@
     tools:showIn="@layout/activity_main">
 
 
+<!--    Image view-->
     <ImageView
         android:id="@+id/content_main_download_image"
         android:layout_width="wrap_content"
@@ -21,6 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    Radio group housing radio button -->
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
@@ -62,6 +65,7 @@
 
     </RadioGroup>
 
+<!--    Custom loading button -->
     <com.udacity.LoadingButton
         android:id="@+id/custom_button"
         android:layout_width="0dp"

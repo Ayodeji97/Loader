@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Coordinate layout as the root layout -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,6 +22,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+<!--    Include the layout -->
     <include layout="@layout/content_main" />
 
 
