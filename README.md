@@ -1,8 +1,7 @@
-# loadStatus_App
+# Loader
 
-Reminder App is a location task based application that display a list of location task and a geofence activation based on task location.
+Loader App is a custom view animated application used to dowload files and display download status.
 
-_This is a custom application in request from Udacity Android Nanodegree Programme._
 
 ## Feature
 * Kotlin Coroutine for async operations
@@ -21,7 +20,7 @@ _Instruction to run the project_
     - [Here](https://developer.android.com/studio) is the link to download the lastest version of android studio
 * Clone the project repository by running the following command line on a terminal
 
-    ```https://github.com/Ayodeji97/Reminder.git```
+    ```https://github.com/Ayodeji97/Loader.git```
     
 * Open project in android studio by clicking of File -> New -> Import project and choose the downloaded project
 * Run the app
@@ -42,26 +41,17 @@ _Instruction to run the project_
 
 # Screen Shots
 <p float="left">
-  <img src="app/src/main/res/drawable/sign_up.png" width="150" />
-  <img src="app/src/main/res/drawable/email_input.png" width="150" />
-  <img src="app/src/main/res/drawable/empty_screen.png" width="150" />
-
+  <img src="app/src/main/res/drawable/choose_download.png" width="200" />
+  <img src="app/src/main/res/drawable/custom_view_animation.png" width="200" />
 </p>
 
 <p float="left">
-    <img src="app/src/main/res/drawable/task_title.png" width="150" />
-   <img src="app/src/main/res/drawable/permission.png" width="150" />
-     <img src="app/src/main/res/drawable/map_view.png" width="150" />
- 
+      <img src="app/src/main/res/drawable/notification.png" width="200" />
+    <img src="app/src/main/res/drawable/detail.png" width="200" />
 </p>
 
 
-<p float="left">
-    <img src="app/src/main/res/drawable/pick_location.png" width="150" />
-  <img src="app/src/main/res/drawable/notofication.png" width="150"/>
-   <img src="app/src/main/res/drawable/task_detail.png" width="150" />
 
-</p>
 
 # Author
 **Daniel Ayodeji**
