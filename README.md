@@ -2,6 +2,8 @@
 
 Loader App is a custom view animated application used to dowload files and display download status.
 
+_This is a custom application built and reviewed by Udacity Android Nanodegree Programme expert._
+
 
 ## Feature
 * Kotlin Coroutine for async operations
